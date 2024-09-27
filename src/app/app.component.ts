@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
       next: (data) => {
         this.ip = data.ip
         this.userAgent = window.navigator.userAgent
-        this.httpClient.get<adressModel>('http://ip-api.com/json/' + this.ip).subscribe({
+        this.httpClient.get<adressModel>('https://ip-api.com/json/' + this.ip).subscribe({
           next: (data) => {
             this.city = data.city; this.contry = data.country; this.region = data.region, this.lat = data.lat.toString(), this.long = data.lon.toString(), this.empresa = data.org;
             const localStorageList: { key: any  | null, value: string | null }[] = [];
