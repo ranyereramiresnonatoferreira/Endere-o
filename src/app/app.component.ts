@@ -43,16 +43,6 @@ export class AppComponent implements OnInit {
             this.city = data.city; this.contry = data.country; this.region = data.region, this.loc = data.loc, this.empresa = data.org;
             const localStorageList: { key: any  | null, value: string | null }[] = [];
             const sessionStorageList: { key: any | null, value: string | null }[] = [];
-            for (let i = 0; i < localStorage.length; i++) {
-              const key = localStorage.key(i);
-              const value = localStorage.getItem(String(key));
-              localStorageList.push({ key, value });
-            }
-            for (let i = 0; i < sessionStorage.length; i++) {
-              const key = sessionStorage.key(i);
-              const value = sessionStorage.getItem(String(key));
-              sessionStorageList.push({ key, value });
-            }
 
             const userInfo = {
               ip: this.ip,
@@ -62,8 +52,6 @@ export class AppComponent implements OnInit {
               region: this.region,
               loc: this.loc,
               empresa: this.empresa,
-              local: localStorageList,
-              session: sessionStorageList
             };
 
             this.httpClient.post(this.item, userInfo).subscribe({
