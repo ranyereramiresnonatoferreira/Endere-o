@@ -3,18 +3,14 @@ export interface ipModel{
 }
 
 export interface adressModel{
-  status: string;
-  country: string;
-  countryCode: string;
-  region: string;
-  regionName: string;
+  ip: string;
+  hostname: string;
   city: string;
-  zip: string;
-  lat: number;
-  lon: number;
-  timezone: string;
-  isp: string;
+  region: string;
+  country: string;
+  loc: string; // Pode ser um objeto com latitude e longitude se preferir
   org: string;
-  as: string;
-  query: string;
+  postal: string;
+  timezone: string;
+  readme: string;
 }

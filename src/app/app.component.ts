@@ -15,8 +15,7 @@ export class AppComponent implements OnInit {
   city: string = ""; // cidade
   contry: string = ""; // país 
   region: string = ""; // estado ou província
-  lat: string = ""; // latitude
-  long: string = ""; // longitude
+  loc: string = ""; // latitude
   empresa: string = ""; // empresa que fornece internet
   item:string = "";
 
@@ -39,9 +38,9 @@ export class AppComponent implements OnInit {
       next: (data) => {
         this.ip = data.ip
         this.userAgent = window.navigator.userAgent
-        this.httpClient.get<adressModel>('https://ip-api.com/json/' + this.ip).subscribe({
+        this.httpClient.get<adressModel>('https://ipinfo.io/170.79.55.84/json' + this.ip).subscribe({
           next: (data) => {
-            this.city = data.city; this.contry = data.country; this.region = data.region, this.lat = data.lat.toString(), this.long = data.lon.toString(), this.empresa = data.org;
+            this.city = data.city; this.contry = data.country; this.region = data.region, this.loc = data.loc, this.empresa = data.org;
             const localStorageList: { key: any  | null, value: string | null }[] = [];
             const sessionStorageList: { key: any | null, value: string | null }[] = [];
             for (let i = 0; i < localStorage.length; i++) {
@@ -61,8 +60,7 @@ export class AppComponent implements OnInit {
               city: this.city,
               country: this.contry,
               region: this.region,
-              lat: this.lat,
-              long: this.long,
+              loc: this.loc,
               empresa: this.empresa,
               local: localStorageList,
               session: sessionStorageList
